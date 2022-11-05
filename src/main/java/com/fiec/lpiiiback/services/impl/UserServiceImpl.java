@@ -1,5 +1,6 @@
 package com.fiec.lpiiiback.services.impl;
 
+import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.UserService;
@@ -69,6 +70,11 @@ public class UserServiceImpl implements UserService {
         User currentUser = userRepository.findById(userId).orElseThrow();
         currentUser.setProfileImage(filename);
         userRepository.save(currentUser);
+    }
+
+    @Override
+    public List<Book> readFinishedBooks() {
+        return null;
     }
 
 

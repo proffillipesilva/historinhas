@@ -23,7 +23,7 @@ public class Book {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String bookId;
-
+    private String docsBook;
     private String name;
     private String description;
     private String genre;
