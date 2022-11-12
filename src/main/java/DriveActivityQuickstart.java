@@ -10,6 +10,8 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.driveactivity.v2.DriveActivityScopes;
 import com.google.api.services.driveactivity.v2.model.*;
+import com.google.firestore.v1beta1.Document;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,6 +113,13 @@ public class DriveActivityQuickstart {
         // Build a new authorized API client service.
         com.google.api.services.driveactivity.v2.DriveActivity service = getDriveActivityService();
 
+        Document doc;
+
+        = new Document()
+                .setTitle("My Document");
+        doc = service.documents().create(doc)
+                .execute();
+
         // Print the recent activity in your Google Drive.
         QueryDriveActivityResponse result =
                 service.activity().query(new QueryDriveActivityRequest().setPageSize(10)).execute();
@@ -132,6 +141,7 @@ public class DriveActivityQuickstart {
                                 .collect(Collectors.toList());
                 System.out.printf(
                         "%s: %s, %s, %s\n", time, truncated(actors), action, truncated(targets));
+
             }
         }
     }

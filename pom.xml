@@ -116,6 +116,14 @@
 			<version>v3-rev20220815-2.0.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-docs -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-docs</artifactId>
+			<version>v1-rev61-1.25.0</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/com.google.oauth-client/google-oauth-client-jetty -->
 		<dependency>
 			<groupId>com.google.oauth-client</groupId>
