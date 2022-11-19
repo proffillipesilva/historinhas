@@ -113,12 +113,7 @@ public class DriveActivityQuickstart {
         // Build a new authorized API client service.
         com.google.api.services.driveactivity.v2.DriveActivity service = getDriveActivityService();
 
-        Document doc;
 
-        = new Document()
-                .setTitle("My Document");
-        doc = service.documents().create(doc)
-                .execute();
 
         // Print the recent activity in your Google Drive.
         QueryDriveActivityResponse result =
