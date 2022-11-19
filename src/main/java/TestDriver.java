@@ -9,22 +9,22 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.docs.v1.Docs;
-import com.google.api.services.docs.v1.DocsScopes;
-import com.google.api.services.docs.v1.model.Document;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
+import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
-public class GoogleDriveManager {
+
+@Service
+public class TestDriver {
     private static final String APPLICATION_NAME = "Technicalsand.com - Google Drive API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -47,7 +47,7 @@ public class GoogleDriveManager {
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = GoogleDriveManager.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = TestDriver.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
         }
@@ -62,20 +62,23 @@ public class GoogleDriveManager {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static void main(String... args) throws IOException, GeneralSecurityException {
+    public Docs getInstanceDocs() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Docs service = new Docs.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
+        return service;
+
 
         // Prints the title of the requested doc:
         // https://docs.google.com/document/d/195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE/edit
-        Document response = service.documents().get("195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE").execute();
-        String title = response.getTitle();
+        //Document response = service.documents().get("195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE").execute();
+        //String title = response.getTitle();
 
-        System.out.printf("The title of the doc is: %s\n", title);
+        //System.out.printf("The title of the doc is: %s\n", title);
     }
+
 }
 
 

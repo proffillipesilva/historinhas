@@ -6,6 +6,9 @@ import com.fiec.lpiiiback.services.ReviwerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 @RestController
 @RequestMapping("/reviewers")
 public class ReviewController {
@@ -14,7 +17,7 @@ public class ReviewController {
     ReviwerService reviwerService;
 
     @PostMapping("/createBook")
-    public Book createDocument(@RequestBody BookRequestDto bookRequestDto){
+    public Book createDocument(@RequestBody BookRequestDto bookRequestDto) throws GeneralSecurityException, IOException {
         return reviwerService.createDocument(bookRequestDto);
 
     }
