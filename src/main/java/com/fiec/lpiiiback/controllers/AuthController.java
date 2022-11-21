@@ -3,6 +3,7 @@ package com.fiec.lpiiiback.controllers;
 import com.fiec.lpiiiback.models.dto.AuthRequestDto;
 import com.fiec.lpiiiback.models.dto.LoginGoogleRequestDto;
 import com.fiec.lpiiiback.models.dto.LoginResponseDto;
+import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.services.FirebaseService;
 import com.fiec.lpiiiback.services.JwtUserDetailsService;
 import com.fiec.lpiiiback.utils.JwtTokenUtil;
@@ -15,6 +16,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import org.apache.http.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,19 +44,15 @@ public class AuthController {
     JwtTokenUtil jwtTokenUtil;
 
     @PostMapping("/signUp")
-    public void signUp(@RequestBody AuthRequestDto authRequestDto){
-        firebaseService.signUp(authRequestDto);
+    public void signUp(@RequestBody AuthRequestDto authRequestDto, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+
+
     }
+
+
 
     @PostMapping("/signIn")
-    public LoginResponseDto signIn(@RequestBody AuthRequestDto authRequestDto){
-        String token = firebaseService.signIn(authRequestDto);
-        return LoginResponseDto.builder()
-                .token(token)
-                .build();
-    }
-
-    @PostMapping("/loginWithGoogle")
     public LoginResponseDto signInWithGoogle(@RequestBody LoginGoogleRequestDto loginGoogleRequestDto) throws GeneralSecurityException, IOException, HttpException {
         HttpTransport httpTransport = new NetHttpTransport();
         JsonFactory jsonFactory = new GsonFactory();

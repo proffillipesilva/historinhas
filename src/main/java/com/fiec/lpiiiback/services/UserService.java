@@ -1,5 +1,6 @@
 package com.fiec.lpiiiback.services;
 
+import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface UserService {
 
     void deleteUser(Integer userId);
     void assignImage(Integer userId, String filename);
+
+    List<Book> readFinishedBooks();
 }
