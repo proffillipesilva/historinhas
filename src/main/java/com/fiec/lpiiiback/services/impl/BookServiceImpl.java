@@ -18,10 +18,11 @@ public class BookServiceImpl implements BookService {
     public List<Book> findAllBooks() {return bookRepository.findAll();}
 
     @Override
-    public Book insertNewBook(BookRequestDto bookRequestDto, String bookImage) {
+    public Book insertNewBook(BookRequestDto bookRequestDto,String docsId, String bookImage) {
         return bookRepository.save(
                 Book.builder()
                         .description(bookRequestDto.getDescription())
+                        .docsBook(docsId)
                         .name(bookRequestDto.getName())
                         .genre(bookRequestDto.getGenre())
                         .authorName(bookRequestDto.getAuthorName())
