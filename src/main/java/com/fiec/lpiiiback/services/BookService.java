@@ -9,6 +9,6 @@ import java.util.List;
 public interface BookService {
 
     List<Book> findAllBooks();
-    Book insertNewBook(BookRequestDto bookRequestDto, String bookImage);
+    Book insertNewBook(BookRequestDto bookRequestDto, String docsId, String bookImage);
 
 }
