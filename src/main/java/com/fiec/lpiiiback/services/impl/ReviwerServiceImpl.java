@@ -2,15 +2,20 @@ package com.fiec.lpiiiback.services.impl;
 
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
 import com.fiec.lpiiiback.models.entities.Book;
+import com.fiec.lpiiiback.models.entities.User;
+import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.BookService;
 import com.fiec.lpiiiback.services.ReviwerService;
+import com.fiec.lpiiiback.services.UserService;
 import com.google.api.services.docs.v1.Docs;
 import com.google.api.services.drive.model.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -21,8 +26,11 @@ public class ReviwerServiceImpl implements ReviwerService {
 
     @Autowired
     BookService bookService;
+
+    @Autowired
+    UserRepository userRepository;
     @Override
-    public Book createDocument(BookRequestDto bookRequestDto) throws GeneralSecurityException, IOException {
+    public Book createDocument(BookRequestDto bookRequestDto, User user) throws GeneralSecurityException, IOException {
 
         com.google.api.services.docs.v1.model.Document doc = new  com.google.api.services.docs.v1.model.Document();
 
@@ -43,7 +51,7 @@ public class ReviwerServiceImpl implements ReviwerService {
             //String title = response.getTitle();
 
 
-            return bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "");
+            return bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "", user);
         } catch(Exception ex){
             System.out.println(ex.getMessage());
         }
@@ -51,12 +59,16 @@ public class ReviwerServiceImpl implements ReviwerService {
     }
 
     @Override
-    public void inviteWriter(String writerId, String bookId) {
-
+    public void inviteWriter(Integer writerId, String bookId) {
+        User user = userRepository.findById(writerId).orElseThrow();
+        Book book = bookService.getBookById(bookId);
+        if(user.getBooks() == null) user.setBooks(new ArrayList<>());
+        user.getBooks().add(book);
+        userRepository.save(user);
     }
 
     @Override
     public void finishBook(String bookId) {
-
+        bookService.finishBook(bookId);
     }
 }

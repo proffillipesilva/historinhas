@@ -2,6 +2,7 @@ package com.fiec.lpiiiback.services.impl;
 
 import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
+import com.fiec.lpiiiback.models.repositories.BookRepository;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    BookRepository bookRepository;
 
     @Override
     public User getProfile(String userId) {
@@ -73,8 +77,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(Integer userId) {
+        return userRepository.findById(userId).orElseThrow();
+    }
+
+    @Override
     public List<Book> readFinishedBooks() {
-        return null;
+        return bookRepository.findBooksByFinished(true) ;
     }
 
 

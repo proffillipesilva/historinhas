@@ -7,4 +7,6 @@ import lombok.Data;
 @Builder
 public class LoginResponseDto {
     String token;
+    String profileImage;
+    String name;
 }

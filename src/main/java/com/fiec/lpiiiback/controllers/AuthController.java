@@ -43,12 +43,12 @@ public class AuthController {
     @Autowired
     JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/signUp")
+    /*@PostMapping("/signUp")
     public void signUp(@RequestBody AuthRequestDto authRequestDto, Authentication authentication){
         User user = (User) authentication.getPrincipal();
 
 
-    }
+    } */
 
 
 
@@ -77,7 +77,9 @@ public class AuthController {
 
             String token = jwtTokenUtil.generateToken(userDetails);
             return LoginResponseDto.builder()
+                    .profileImage(pictureUrl)
                     .token(token)
+                    .name(name)
                     .build();
         }
         throw new HttpException();

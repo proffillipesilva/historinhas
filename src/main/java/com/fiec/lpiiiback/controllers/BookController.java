@@ -32,12 +32,12 @@ public class BookController {
         return bookService.findAllBooks().stream().map(BookResponseDto::convert).collect(Collectors.toList());
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public BookResponseDto insertBook(@RequestParam("bookInfo") String bookRequest,
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addFrontImage(@PathVariable("id") String bookId,
                                             @RequestParam("image") MultipartFile multipartFile
     ) throws IOException {
 
-        BookRequestDto bookRequestDto = new ObjectMapper().readValue(bookRequest, BookRequestDto.class);
+
 
         String profileImage = "prd" + UUID.randomUUID() + "_" + Long.toHexString(new Date().getTime());
 
@@ -51,8 +51,7 @@ public class BookController {
                 .size(100, 100)
                 .outputFormat("jpg")
                 .toFile(new File(thumbFilename.toString()));
-        Book insertedBook = bookService.insertNewBook(bookRequestDto, profileImage);
-        return BookResponseDto.convert(insertedBook);
+        bookService.updateFrontImage(bookId, profileImage);
 
     }
 }

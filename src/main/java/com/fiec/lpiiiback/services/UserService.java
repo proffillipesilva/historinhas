@@ -19,5 +19,7 @@ public interface UserService {
     void deleteUser(Integer userId);
     void assignImage(Integer userId, String filename);
 
+    User getUserById(Integer userId);
+
     List<Book> readFinishedBooks();
 }

@@ -1,8 +1,10 @@
 package com.fiec.lpiiiback.controllers;
 
 import com.fiec.lpiiiback.models.entities.Book;
+import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.services.WriterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +20,9 @@ public class WriterController {
         writerService.requestReview(bookId);
     }
     @GetMapping("/books")
-    public List<Book> getDocumentsForEdit() {
-        return writerService.getDocumentsForEdit();
+    public List<Book> getDocumentsForEdit(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return writerService.getDocumentsForEdit(user);
 
     }
 }
