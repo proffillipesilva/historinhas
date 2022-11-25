@@ -5,22 +5,18 @@ import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.BookService;
-import com.fiec.lpiiiback.services.ReviwerService;
-import com.fiec.lpiiiback.services.UserService;
+import com.fiec.lpiiiback.services.ReviewerService;
 import com.google.api.services.docs.v1.Docs;
 import com.google.api.services.drive.model.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
-public class ReviwerServiceImpl implements ReviwerService {
+public class ReviewerServiceImpl implements ReviewerService {
     @Autowired
     GoogleDriveManager googleDriveManager;
 
@@ -41,8 +37,12 @@ public class ReviwerServiceImpl implements ReviwerService {
             com.google.api.services.docs.v1.model.Document docResponse;
             Docs.Documents.Create create = googleDriveManager.getInstanceDocs().documents().create(doc);
             docResponse = create.execute();
+
             Permission permission = new Permission()
-                    .setType("anyone")
+                    //.setType("anyone")
+                    //.setRole("writer");
+                    .setType("user")
+                    .setEmailAddress(user.getEmail())
                     .setRole("writer");
             googleDriveManager.getInstance().permissions().create(docResponse.getDocumentId(), permission).execute();
 
@@ -59,16 +59,29 @@ public class ReviwerServiceImpl implements ReviwerService {
     }
 
     @Override
-    public void inviteWriter(Integer writerId, String bookId) {
+    public void inviteWriter(Integer writerId, String bookId) throws GeneralSecurityException, IOException {
         User user = userRepository.findById(writerId).orElseThrow();
         Book book = bookService.getBookById(bookId);
         if(user.getBooks() == null) user.setBooks(new ArrayList<>());
         user.getBooks().add(book);
+        Permission permission = new Permission()
+                //.setType("anyone")
+                //.setRole("writer");
+                .setType("user")
+                .setEmailAddress(user.getEmail())
+                .setRole("writer");
+        googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
+        if(book.getAuthors() == null) book.setAuthors(new ArrayList<>());
+        book.getAuthors().add(user);
         userRepository.save(user);
     }
 
     @Override
-    public void finishBook(String bookId) {
-        bookService.finishBook(bookId);
+    public void finishBook(String bookId) throws GeneralSecurityException, IOException {
+        Book book = bookService.finishBook(bookId);
+        Permission permission = new Permission()
+                .setType("anyone")
+                .setRole("reader");
+        googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
     }
 }

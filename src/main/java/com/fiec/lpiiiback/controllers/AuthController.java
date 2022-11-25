@@ -4,8 +4,10 @@ import com.fiec.lpiiiback.models.dto.AuthRequestDto;
 import com.fiec.lpiiiback.models.dto.LoginGoogleRequestDto;
 import com.fiec.lpiiiback.models.dto.LoginResponseDto;
 import com.fiec.lpiiiback.models.entities.User;
+import com.fiec.lpiiiback.models.enums.UserRoles;
 import com.fiec.lpiiiback.services.FirebaseService;
 import com.fiec.lpiiiback.services.JwtUserDetailsService;
+import com.fiec.lpiiiback.services.UserService;
 import com.fiec.lpiiiback.utils.JwtTokenUtil;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -36,6 +38,9 @@ public class AuthController {
 
     @Autowired
     JwtUserDetailsService jwtUserDetailsService;
+
+    @Autowired
+    UserService userService;
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
@@ -73,13 +78,25 @@ public class AuthController {
             String name = (String) payload.get("name");
             String pictureUrl = (String) payload.get("picture");
 
-            UserDetails userDetails = jwtUserDetailsService.loadByEmail(email);
+            User user = (User) jwtUserDetailsService.loadByEmail(email);
+            // Cria usuario quando nao tem na base ainda
+            if(user == null){
+                user = userService.createTempUser(email, name, pictureUrl);
+            }
+            // Seta role
+            if(loginGoogleRequestDto.isReviewer()){
+                user.setUserRole(UserRoles.ROLE_REVISOR);
+            } else {
+                user.setUserRole(UserRoles.ROLE_USER);
+            }
 
-            String token = jwtTokenUtil.generateToken(userDetails);
+            // gera token a partir do usuario e da role
+            String token = jwtTokenUtil.generateToken(user);
             return LoginResponseDto.builder()
                     .profileImage(pictureUrl)
                     .token(token)
                     .name(name)
+                    .alreadyRegistered(user.isAlreadyRegistered())
                     .build();
         }
         throw new HttpException();

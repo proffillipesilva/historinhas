@@ -30,5 +30,8 @@ public class Book {
     private Integer reviewerId; //author
     private boolean finished;
 
+    @OneToMany
+    List<User> authors = new ArrayList<>();
+
 
 }

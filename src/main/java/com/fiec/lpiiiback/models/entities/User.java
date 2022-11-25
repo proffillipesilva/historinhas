@@ -25,23 +25,28 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private Integer age;
     private String name;
-    private String lastName;
-    private String age;
     @Column(unique = true)
     private String email;
-    private String cpf;
-    private String password;
+    private String phoneNumber;
+    private String fcmToken;
     private String profileImage;
     private UserRoles userRole;
+    private boolean alreadyRegistered;
 
     @OneToMany
     private List<Book> books = new ArrayList<>();
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("revisor"));
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return null;
     }
 
     @Override

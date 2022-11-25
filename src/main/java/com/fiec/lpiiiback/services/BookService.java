@@ -9,15 +9,19 @@ import java.util.List;
 
 public interface BookService {
 
-    List<Book> findAllBooks();
+    List<Book> findAllFinishedBooks();
 
     Book insertNewBook(BookRequestDto bookRequestDto, String docsId, String bookImage, User user);
 
     void updateFrontImage(String bookId, String profileImage);
 
-    void finishBook(String bookId);
+    Book finishBook(String bookId);
 
     Book getBookById(String bookId);
+
+    List<Book> getMyBooks(User user);
+
+    List<Book> getBooksByReviewerId(Integer reviewerId);
 
 
 }

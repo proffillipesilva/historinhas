@@ -13,6 +13,7 @@ import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,6 +33,14 @@ public class UserController {
     @GetMapping("/books")
     public List<Book> readFinishedBooks(){
         return userService.readFinishedBooks();
+    }
+
+    @PostMapping("/signUp")
+    public void signUp(@RequestBody CreateUserRequestDto createUserRequestDto, Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        userService.signUpUser(user.getId(), createUserRequestDto.getName(), createUserRequestDto.getPhoneNumber(), createUserRequestDto.getAge());
+
+
     }
 
 }

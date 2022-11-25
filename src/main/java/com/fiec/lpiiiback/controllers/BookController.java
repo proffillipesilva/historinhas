@@ -4,10 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
 import com.fiec.lpiiiback.models.dto.BookResponseDto;
 import com.fiec.lpiiiback.models.entities.Book;
+import com.fiec.lpiiiback.models.entities.User;
+import com.fiec.lpiiiback.models.enums.UserRoles;
 import com.fiec.lpiiiback.services.BookService;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +32,7 @@ public class BookController {
 
     @GetMapping
     public List<BookResponseDto> getAllBooks(){
-        return bookService.findAllBooks().stream().map(BookResponseDto::convert).collect(Collectors.toList());
+        return bookService.findAllFinishedBooks().stream().map(BookResponseDto::convert).collect(Collectors.toList());
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -53,5 +56,18 @@ public class BookController {
                 .toFile(new File(thumbFilename.toString()));
         bookService.updateFrontImage(bookId, profileImage);
 
+    }
+
+    @GetMapping("/written")
+    public List<BookResponseDto> getMyWrittenBooks(Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        return bookService.getMyBooks(user).stream().map(BookResponseDto::convert).collect(Collectors.toList());
+    }
+
+    @GetMapping
+    public List<BookResponseDto> getBooksByReviewer(Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        if(UserRoles.ROLE_USER.equals(user.getUserRole())) return null;
+        return bookService.getBooksByReviewerId(user.getId()).stream().map(BookResponseDto::convert).collect(Collectors.toList());
     }
 }

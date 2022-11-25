@@ -12,14 +12,15 @@ public interface UserService {
     User getProfile(String userId);
     User login(String email);
     List<User> getAllUsers();
-    User signUpUser(String name, String email, String password, String cpf, String age, String lastName);
+    User signUpUser(Integer userId, String name, String phoneNumber, Integer age);
 
-    User updateUser(Integer userId, String name, String password, String cpf, String lastName, String age);
+    User updateUser(Integer userId, String name,  Integer age);
 
     void deleteUser(Integer userId);
     void assignImage(Integer userId, String filename);
 
     User getUserById(Integer userId);
 
-    List<Book> readFinishedBooks();
+    User createTempUser(String email, String name, String profileImage);
+
 }
