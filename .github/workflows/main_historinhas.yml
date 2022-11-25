@@ -23,6 +23,9 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
+        
+      - name: Rename to Root.war
+        run: mv '${{ github.workspace }}/target/*.war' '${{ github.workspace }}/target/ROOT.war'
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
