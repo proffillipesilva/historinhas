@@ -23,14 +23,6 @@ public class UserServiceImpl implements UserService {
     BookRepository bookRepository;
 
     @Override
-    public User getProfile(String userId) {
-        return userRepository.findById(Integer.parseInt(userId)).orElseThrow();
-
-        //.profileImage("http://maisexpressao.com.br/imagens/noticias/45537/640x480/airltonjpg.JPG")
-
-    }
-
-    @Override
     public User login(String email) {
         return userRepository.findByEmail(email).orElse(null);
     }
@@ -81,7 +73,6 @@ public class UserServiceImpl implements UserService {
                         .alreadyRegistered(false)
                         .name(name)
                         .profileImage(profileImage)
-                        .books(new ArrayList<>())
                 .build());
     }
 

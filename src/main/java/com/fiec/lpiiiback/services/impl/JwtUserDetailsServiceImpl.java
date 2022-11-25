@@ -2,6 +2,7 @@ package com.fiec.lpiiiback.services.impl;
 
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.JwtUserDetailsService;
+import com.fiec.lpiiiback.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -10,10 +11,10 @@ import org.springframework.stereotype.Service;
 public class JwtUserDetailsServiceImpl implements JwtUserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Override
     public UserDetails loadByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow();
+        return userService.login(email);
     }
 }

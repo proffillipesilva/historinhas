@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class WriterServiceImpl implements WriterService {
 
     @Autowired
-    UserRepository userRepository;
+    BookRepository bookRepository;
     @Override
     public void requestReview(String bookId) {
 
@@ -23,7 +23,7 @@ public class WriterServiceImpl implements WriterService {
 
     @Override
     public List<Book> getDocumentsForEdit(User user) {
+        return bookRepository.findBooksByAuthorsContainsAndFinishedFalse(user);
 
-        return user.getBooks().stream().filter(b -> !b.isFinished()).collect(Collectors.toList());
     }
 }

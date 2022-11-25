@@ -9,7 +9,7 @@ import java.util.List;
  * Representa os casos de uso
  */
 public interface UserService {
-    User getProfile(String userId);
+
     User login(String email);
     List<User> getAllUsers();
     User signUpUser(Integer userId, String name, String phoneNumber, Integer age);
@@ -22,5 +22,6 @@ public interface UserService {
     User getUserById(Integer userId);
 
     User createTempUser(String email, String name, String profileImage);
+
 
 }

@@ -35,9 +35,6 @@ public class User implements UserDetails {
     private UserRoles userRole;
     private boolean alreadyRegistered;
 
-    @OneToMany
-    private List<Book> books = new ArrayList<>();
-
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
