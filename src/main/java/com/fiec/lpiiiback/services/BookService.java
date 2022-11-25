@@ -15,7 +15,7 @@ public interface BookService {
 
     void updateFrontImage(String bookId, String profileImage);
 
-    void finishBook(String bookId);
+    Book finishBook(String bookId);
 
     Book getBookById(String bookId);
 

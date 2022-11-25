@@ -41,8 +41,12 @@ public class ReviwerServiceImpl implements ReviwerService {
             com.google.api.services.docs.v1.model.Document docResponse;
             Docs.Documents.Create create = googleDriveManager.getInstanceDocs().documents().create(doc);
             docResponse = create.execute();
+
             Permission permission = new Permission()
-                    .setType("anyone")
+                    //.setType("anyone")
+                    //.setRole("writer");
+                    .setType("user")
+                    .setEmailAddress(user.getEmail())
                     .setRole("writer");
             googleDriveManager.getInstance().permissions().create(docResponse.getDocumentId(), permission).execute();
 
@@ -59,16 +63,27 @@ public class ReviwerServiceImpl implements ReviwerService {
     }
 
     @Override
-    public void inviteWriter(Integer writerId, String bookId) {
+    public void inviteWriter(Integer writerId, String bookId) throws GeneralSecurityException, IOException {
         User user = userRepository.findById(writerId).orElseThrow();
         Book book = bookService.getBookById(bookId);
         if(user.getBooks() == null) user.setBooks(new ArrayList<>());
         user.getBooks().add(book);
+        Permission permission = new Permission()
+                //.setType("anyone")
+                //.setRole("writer");
+                .setType("user")
+                .setEmailAddress(user.getEmail())
+                .setRole("writer");
+        googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
         userRepository.save(user);
     }
 
     @Override
-    public void finishBook(String bookId) {
-        bookService.finishBook(bookId);
+    public void finishBook(String bookId) throws GeneralSecurityException, IOException {
+        Book book = bookService.finishBook(bookId);
+        Permission permission = new Permission()
+                .setType("anyone")
+                .setRole("reader");
+        googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
     }
 }

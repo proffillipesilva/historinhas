@@ -34,6 +34,7 @@ public class User implements UserDetails {
     private String password;
     private String profileImage;
     private UserRoles userRole;
+    private boolean alreadyRegistered;
 
     @OneToMany
     private List<Book> books = new ArrayList<>();

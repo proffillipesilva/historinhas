@@ -9,4 +9,5 @@ public class LoginResponseDto {
     String token;
     String profileImage;
     String name;
+    boolean alreadyRegistered;
 }

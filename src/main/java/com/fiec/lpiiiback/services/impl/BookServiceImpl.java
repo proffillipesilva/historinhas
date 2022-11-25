@@ -42,10 +42,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void finishBook(String bookId) {
+    public Book finishBook(String bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
         book.setFinished(true);
-        bookRepository.save(book);
+        return bookRepository.save(book);
     }
 
     @Override

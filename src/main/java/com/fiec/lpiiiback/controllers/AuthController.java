@@ -73,13 +73,14 @@ public class AuthController {
             String name = (String) payload.get("name");
             String pictureUrl = (String) payload.get("picture");
 
-            UserDetails userDetails = jwtUserDetailsService.loadByEmail(email);
+            User user = (User) jwtUserDetailsService.loadByEmail(email);
 
-            String token = jwtTokenUtil.generateToken(userDetails);
+            String token = jwtTokenUtil.generateToken(user);
             return LoginResponseDto.builder()
                     .profileImage(pictureUrl)
                     .token(token)
                     .name(name)
+                    .alreadyRegistered(user.isAlreadyRegistered())
                     .build();
         }
         throw new HttpException();

@@ -12,7 +12,7 @@ import java.security.GeneralSecurityException;
 public interface ReviwerService {
     Book createDocument(BookRequestDto bookRequestDto, User user) throws GeneralSecurityException, IOException;
 
-    void inviteWriter(Integer writerId,String bookId);
+    void inviteWriter(Integer writerId,String bookId) throws GeneralSecurityException, IOException;
 
-    void finishBook(String bookId);
+    void finishBook(String bookId) throws GeneralSecurityException, IOException;
 }
