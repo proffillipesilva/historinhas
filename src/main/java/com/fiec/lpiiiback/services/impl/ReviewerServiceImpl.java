@@ -62,8 +62,7 @@ public class ReviewerServiceImpl implements ReviewerService {
     public void inviteWriter(Integer writerId, String bookId) throws GeneralSecurityException, IOException {
         User user = userRepository.findById(writerId).orElseThrow();
         Book book = bookService.getBookById(bookId);
-        if(user.getBooks() == null) user.setBooks(new ArrayList<>());
-        user.getBooks().add(book);
+
         Permission permission = new Permission()
                 //.setType("anyone")
                 //.setRole("writer");
