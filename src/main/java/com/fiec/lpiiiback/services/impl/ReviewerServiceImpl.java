@@ -5,22 +5,18 @@ import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.BookService;
-import com.fiec.lpiiiback.services.ReviwerService;
-import com.fiec.lpiiiback.services.UserService;
+import com.fiec.lpiiiback.services.ReviewerService;
 import com.google.api.services.docs.v1.Docs;
 import com.google.api.services.drive.model.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 @Service
-public class ReviwerServiceImpl implements ReviwerService {
+public class ReviewerServiceImpl implements ReviewerService {
     @Autowired
     GoogleDriveManager googleDriveManager;
 
@@ -75,6 +71,8 @@ public class ReviwerServiceImpl implements ReviwerService {
                 .setEmailAddress(user.getEmail())
                 .setRole("writer");
         googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
+        if(book.getAuthors() == null) book.setAuthors(new ArrayList<>());
+        book.getAuthors().add(user);
         userRepository.save(user);
     }
 

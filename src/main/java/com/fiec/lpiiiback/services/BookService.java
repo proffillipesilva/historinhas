@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BookService {
 
-    List<Book> findAllBooks();
+    List<Book> findAllFinishedBooks();
 
     Book insertNewBook(BookRequestDto bookRequestDto, String docsId, String bookImage, User user);
 
@@ -18,6 +18,10 @@ public interface BookService {
     Book finishBook(String bookId);
 
     Book getBookById(String bookId);
+
+    List<Book> getMyBooks(User user);
+
+    List<Book> getBooksByReviewerId(Integer reviewerId);
 
 
 }

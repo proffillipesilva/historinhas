@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,27 +41,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUpUser(String name, String email, String password, String cpf, String age, String lastName) {
-        return userRepository.save(
-                User.builder()
-                        .name(name)
-                        .cpf(cpf)
-                        .email(email)
-                        .age(age)
-                        .lastName(lastName)
-                        .password(new String(DigestUtils.sha3_256(password), StandardCharsets.UTF_8))
-                        .build()
-        );
+    public User signUpUser(Integer userId, String name, String phoneNumber, Integer age) {
+        User user = userRepository.findById(userId).orElseThrow();
+        user.setName(name);
+        user.setAge(age);
+        user.setPhoneNumber(phoneNumber);
+        return userRepository.save(user);
     }
 
     @Override
-    public User updateUser(Integer userId, String name, String password, String cpf, String lastName, String age) {
+    public User updateUser(Integer userId, String name, Integer age) {
         User currentUser = userRepository.findById(userId).orElseThrow();
         currentUser.setName(name);
-        currentUser.setPassword(password);
-        currentUser.setCpf(cpf);
         currentUser.setAge(age);
-        currentUser.setLastName(lastName);
         return userRepository.save(currentUser);
     }
 
@@ -82,8 +75,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Book> readFinishedBooks() {
-        return bookRepository.findBooksByFinished(true) ;
+    public User createTempUser(String email, String name, String profileImage) {
+        return userRepository.save(User.builder()
+                        .email(email)
+                        .alreadyRegistered(false)
+                        .name(name)
+                        .profileImage(profileImage)
+                        .books(new ArrayList<>())
+                .build());
     }
 
 

@@ -17,7 +17,7 @@ public class BookServiceImpl implements BookService {
     @Autowired
     BookRepository bookRepository;
     @Override
-    public List<Book> findAllBooks() {return bookRepository.findAll();}
+    public List<Book> findAllFinishedBooks() {return bookRepository.findBooksByFinished(true);}
 
     @Override
     public Book insertNewBook(BookRequestDto bookRequestDto, String docsId, String bookImage, User user) {
@@ -51,5 +51,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookById(String bookId) {
         return bookRepository.findById(bookId).orElseThrow();
+    }
+
+    @Override
+    public List<Book> getMyBooks(User user) {
+        return bookRepository.findBooksByAuthorsContainsAndFinishedFalse(user);
+    }
+
+    @Override
+    public List<Book> getBooksByReviewerId(Integer reviewerId) {
+        return bookRepository.findBooksByReviewerIdAndFinishedFalse(reviewerId);
     }
 }
