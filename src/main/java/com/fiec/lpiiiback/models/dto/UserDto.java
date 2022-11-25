@@ -11,19 +11,17 @@ public class UserDto {
     String email;
     String name;
     String profileImage;
-    String cpf;
-    String age;
-    String lastName;
+    Integer age;
+    String phoneNumber;
 
     public static UserDto convertToUserDto(User user){
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
-                .cpf(user.getCpf())
                 .profileImage(user.getProfileImage())
                 .age(user.getAge())
-                .lastName(user.getLastName())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 }

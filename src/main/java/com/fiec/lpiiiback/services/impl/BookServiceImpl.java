@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,6 +30,8 @@ public class BookServiceImpl implements BookService {
                         .name(bookRequestDto.getName())
                         .genre(bookRequestDto.getGenre())
                         .reviewerId(user.getId())
+                        .authorName(user.getName())
+                        .authors(Collections.singletonList(user))
                         .bookImage(bookImage)
                         .build()
         );
