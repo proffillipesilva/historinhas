@@ -64,7 +64,7 @@ public class BookController {
         return bookService.getMyBooks(user).stream().map(BookResponseDto::convert).collect(Collectors.toList());
     }
 
-    @GetMapping
+    @GetMapping("/reviewer")
     public List<BookResponseDto> getBooksByReviewer(Authentication authentication){
         User user = (User) authentication.getPrincipal();
         if(UserRoles.ROLE_USER.equals(user.getUserRole())) return null;
