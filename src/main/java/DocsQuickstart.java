@@ -11,12 +11,14 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.docs.v1.Docs;
 import com.google.api.services.docs.v1.DocsScopes;
 import com.google.api.services.docs.v1.model.Document;
+import com.google.api.services.drive.DriveScopes;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,9 +42,11 @@ public class DocsQuickstart {
      * Global instance of the scopes required by this quickstart.
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
-    private static final List<String> SCOPES =
-            Collections.singletonList(DocsScopes.DOCUMENTS_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final List<String> SCOPES = Arrays.asList(
+            DocsScopes.DOCUMENTS,
+            DocsScopes.DRIVE, DocsScopes.DRIVE_FILE
+    );
+    private static final String CREDENTIALS_FILE_PATH = "/credentials2.json";
 
     /**
      * Creates an authorized Credential object.

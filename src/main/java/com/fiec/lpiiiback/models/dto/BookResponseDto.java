@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class BookResponseDto {
     private String bookId;
-
+    private String docsBook;
     private String name;
     private String description;
     private String genre;
@@ -25,6 +25,7 @@ public class BookResponseDto {
                 .genre(book.getGenre())
                 .authorName(book.getAuthorName())
                 .bookImage(book.getBookImage())
+                .docsBook(book.getDocsBook())
                 .build();
     }
 }

@@ -11,6 +11,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.docs.v1.Docs;
+import com.google.api.services.docs.v1.DocsScopes;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,8 +31,11 @@ public class GoogleDriveManager {
     private static final String APPLICATION_NAME = "Technicalsand.com - Google Drive API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
-    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
-    private static final String CREDENTIALS_FILE_PATH = "/teste.json";
+    private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE,
+            DocsScopes.DOCUMENTS, DocsScopes.DOCUMENTS_READONLY, DriveScopes.DRIVE_METADATA,
+        DocsScopes.DRIVE, DocsScopes.DRIVE_FILE, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA
+    );
+    private static final String CREDENTIALS_FILE_PATH = "/credentials2.json";
     public Drive getInstance() throws GeneralSecurityException, IOException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();

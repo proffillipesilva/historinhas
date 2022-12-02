@@ -41,23 +41,13 @@ public class ReviewerServiceImpl implements ReviewerService {
                 .setEmailAddress(user.getEmail())
                 .setRole("writer");
         googleDriveManager.getInstance().permissions().create(docResponse.getDocumentId(), permission).execute();
-        bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "", user);
-        try {
-            new Thread(() -> {
-
-System.out.println("Running");
-
-            });
-
+        return bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "", user);
 
             //String DOCUMENT_ID = "prd" + UUID.randomUUID() + "_" + Long.toHexString(new Date().getTime());
             //com.google.api.services.docs.v1.model.Document response = googleDriveManager.getInstanceDocs().documents().get(DOCUMENT_ID).execute();
             //String title = response.getTitle();
 
-        } catch(Exception ex){
-            System.out.println(ex.getMessage());
-        }
-        return null;
+
     }
 
     @Override

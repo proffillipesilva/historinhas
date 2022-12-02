@@ -20,6 +20,7 @@ public class ImageController {
     @GetMapping("/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable("filename") String filename){
         byte[] image = new byte[0];
+        if("undefined".equals(filename)) filename = "undefined.png";
         try{
             image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT + filename));
         } catch (IOException e) {

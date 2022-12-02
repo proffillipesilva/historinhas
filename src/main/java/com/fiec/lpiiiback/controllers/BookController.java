@@ -54,7 +54,7 @@ public class BookController {
                 .size(100, 100)
                 .outputFormat("jpg")
                 .toFile(new File(thumbFilename.toString()));
-        bookService.updateFrontImage(bookId, profileImage);
+        bookService.updateFrontImage(bookId, profileImage + ".jpg");
 
     }
 
