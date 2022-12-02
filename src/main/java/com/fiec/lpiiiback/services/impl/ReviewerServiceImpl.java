@@ -28,30 +28,33 @@ public class ReviewerServiceImpl implements ReviewerService {
     @Override
     public Book createDocument(BookRequestDto bookRequestDto, User user) throws GeneralSecurityException, IOException {
 
-        com.google.api.services.docs.v1.model.Document doc = new  com.google.api.services.docs.v1.model.Document();
-
-        doc.setTitle(bookRequestDto.getName());
-
-
         try {
-            com.google.api.services.docs.v1.model.Document docResponse;
-            Docs.Documents.Create create = googleDriveManager.getInstanceDocs().documents().create(doc);
-            docResponse = create.execute();
+            new Thread(() -> {
+                try {
+                    com.google.api.services.docs.v1.model.Document doc = new  com.google.api.services.docs.v1.model.Document();
+                    doc.setTitle(bookRequestDto.getName());
+                    com.google.api.services.docs.v1.model.Document docResponse;
+                    Docs.Documents.Create create = googleDriveManager.getInstanceDocs().documents().create(doc);
+                    docResponse = create.execute();
 
-            Permission permission = new Permission()
-                    //.setType("anyone")
-                    //.setRole("writer");
-                    .setType("user")
-                    .setEmailAddress(user.getEmail())
-                    .setRole("writer");
-            googleDriveManager.getInstance().permissions().create(docResponse.getDocumentId(), permission).execute();
+                    Permission permission = new Permission()
+                            //.setType("anyone")
+                            //.setRole("writer");
+                            .setType("user")
+                            .setEmailAddress(user.getEmail())
+                            .setRole("writer");
+                    googleDriveManager.getInstance().permissions().create(docResponse.getDocumentId(), permission).execute();
+                    bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "", user);
+                } catch (IOException | GeneralSecurityException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
 
             //String DOCUMENT_ID = "prd" + UUID.randomUUID() + "_" + Long.toHexString(new Date().getTime());
             //com.google.api.services.docs.v1.model.Document response = googleDriveManager.getInstanceDocs().documents().get(DOCUMENT_ID).execute();
             //String title = response.getTitle();
 
-
-            return bookService.insertNewBook(bookRequestDto, docResponse.getDocumentId(), "", user);
         } catch(Exception ex){
             System.out.println(ex.getMessage());
         }
