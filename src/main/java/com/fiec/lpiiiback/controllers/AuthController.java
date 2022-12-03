@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -56,7 +57,11 @@ public class AuthController {
 
 
     @PostMapping("/signIn")
-    public LoginResponseDto signInWithGoogle(@RequestBody LoginGoogleRequestDto loginGoogleRequestDto) throws GeneralSecurityException, IOException, HttpException {
+    public LoginResponseDto signInWithGoogle(@Valid @RequestBody LoginGoogleRequestDto loginGoogleRequestDto) throws GeneralSecurityException, IOException, HttpException {
+        if(!clientId.equals(loginGoogleRequestDto.getClientId())){
+            throw new HttpException();
+        }
+
         HttpTransport httpTransport = new NetHttpTransport();
         JsonFactory jsonFactory = new GsonFactory();
 

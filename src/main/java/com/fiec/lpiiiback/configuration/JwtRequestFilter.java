@@ -23,6 +23,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -36,25 +38,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        List<String> excludedUrls = Arrays.asList("/auth/signIn");
         String requestTokenHeader = request.getHeader("Authorization");
         String jwtToken = null;
         String email = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
-
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+        String pathUri = request.getRequestURI();
+        if (!excludedUrls.contains(pathUri) && requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-
-
-/*
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            FirebaseToken token = auth.verifyIdToken(jwtToken);
-
-            String email = token.getEmail();
-
-
-
- */
             try {
                 email = jwtTokenUtil.getUsernameFromToken(jwtToken);
 
