@@ -1,6 +1,7 @@
 package com.fiec.lpiiiback.controllers;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +21,13 @@ public class ImageController {
     @GetMapping("/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable("filename") String filename){
         byte[] image = new byte[0];
-        if("undefined".equals(filename)) filename = "undefined.png";
+
         try{
-            image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT + filename));
+            if("undefined".equals(filename)) {
+                image = FileUtils.readFileToByteArray(new ClassPathResource("undefined.png").getFile());
+            } else {
+                image = FileUtils.readFileToByteArray(new File(FILE_PATH_ROOT + filename));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
