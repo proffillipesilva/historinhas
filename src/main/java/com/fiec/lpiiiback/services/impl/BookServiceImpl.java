@@ -6,10 +6,10 @@ import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.BookRepository;
 import com.fiec.lpiiiback.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -17,13 +17,16 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     BookRepository bookRepository;
+
     @Override
     public List<Book> findAllFinishedBooks() {return bookRepository.findBooksByFinished(true);}
 
     @Override
     public Book insertNewBook(BookRequestDto bookRequestDto, String docsId, String bookImage, User user) {
 
-        return bookRepository.save(
+        HashSet<User> myAuthors = new HashSet<>();
+        myAuthors.add(user);
+        Book book = bookRepository.save(
                 Book.builder()
                         .description(bookRequestDto.getDescription())
                         .docsBook(docsId)
@@ -31,10 +34,14 @@ public class BookServiceImpl implements BookService {
                         .genre(bookRequestDto.getGenre())
                         .reviewerId(user.getId())
                         .authorName(user.getName())
-                        .authors(Collections.singletonList(user))
+                        .authors(myAuthors)
                         .bookImage(bookImage)
                         .build()
         );
+
+
+        return bookRepository.save(book);
+
     }
 
     @Override
@@ -47,7 +54,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book finishBook(String bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
-        book.setFinished(true);
+        book.setFinished(false);
         return bookRepository.save(book);
     }
 

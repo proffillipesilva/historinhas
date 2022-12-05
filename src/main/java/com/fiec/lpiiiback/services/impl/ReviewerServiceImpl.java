@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 public class ReviewerServiceImpl implements ReviewerService {
@@ -62,7 +63,8 @@ public class ReviewerServiceImpl implements ReviewerService {
                 .setEmailAddress(user.getEmail())
                 .setRole("writer");
         googleDriveManager.getInstance().permissions().create(book.getDocsBook(), permission).execute();
-        if(book.getAuthors() == null) book.setAuthors(new ArrayList<>());
+        if(book.getAuthors() == null) book.setAuthors(new HashSet<>());
+
         book.getAuthors().add(user);
         userRepository.save(user);
     }

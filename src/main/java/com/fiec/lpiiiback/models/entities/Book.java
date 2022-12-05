@@ -1,16 +1,16 @@
 package com.fiec.lpiiiback.models.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,8 +31,13 @@ public class Book {
     private Integer reviewerId; //author
     private boolean finished;
 
-    @OneToMany
-    List<User> authors = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "tb_book_authors",
+            joinColumns = { @JoinColumn(name = "book_id") },
+            inverseJoinColumns = { @JoinColumn(name = "author_id") }
+    )
+    Set<User> authors = new HashSet<>();
 
 
 }
