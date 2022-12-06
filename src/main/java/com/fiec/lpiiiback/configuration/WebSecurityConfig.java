@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth/signIn").permitAll()
-                .antMatchers( "/images/**", "/reviewers/**", "/Callback").permitAll()
+                .antMatchers( "/images/**", "/reviewers/**", "/Callback", "/hello/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .logout()
