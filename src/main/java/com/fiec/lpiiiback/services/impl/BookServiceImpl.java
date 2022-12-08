@@ -1,6 +1,8 @@
 package com.fiec.lpiiiback.services.impl;
 
+import com.fiec.lpiiiback.models.dto.AuthorDto;
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
+import com.fiec.lpiiiback.models.dto.ReviewerBookResponseDto;
 import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.BookRepository;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -69,7 +73,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBooksByReviewerId(Integer reviewerId) {
-        return bookRepository.findBooksByReviewerIdAndFinishedFalse(reviewerId);
+    public List<ReviewerBookResponseDto> getBooksByReviewerId(Integer reviewerId) {
+        List<Book> books = bookRepository.findBooksByReviewerIdAndFinishedFalse(reviewerId);
+        return books.stream().map(book -> {
+            Set<User> users = book.getAuthors();
+            Set<AuthorDto> authors = new HashSet<>();
+            if(users != null){
+                authors = users.stream().map(AuthorDto::convert).collect(Collectors.toSet());
+            }
+            ReviewerBookResponseDto reviewerBookResponseDto = ReviewerBookResponseDto.convert(book);
+            reviewerBookResponseDto.setCoAuthors(authors);
+            return reviewerBookResponseDto;
+
+        }).collect(Collectors.toList());
     }
 }

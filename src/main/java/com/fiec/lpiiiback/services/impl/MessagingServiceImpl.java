@@ -1,5 +1,6 @@
 package com.fiec.lpiiiback.services.impl;
 
+import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.MessagingService;
@@ -30,6 +31,26 @@ public class MessagingServiceImpl implements MessagingService {
                 .setNotification(Notification.builder()
                         .setTitle("Oi Amiguinhos")
                         .setBody("Tudo bem, aqui é o Cereia").build()
+                )
+                .setToken(fcmToken)
+                .build();
+        try {
+            firebaseMessaging.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendReviewMessageToUser(Integer userId, Book book, String requesterEmail) {
+        User user = userRepository.findById(userId).orElseThrow();
+        String fcmToken = user.getFcmToken();
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+
+        Message message = Message.builder()
+                .setNotification(Notification.builder()
+                        .setTitle("Request review Message")
+                        .setBody("From user " + requesterEmail + " for book " + book.getName()).build()
                 )
                 .setToken(fcmToken)
                 .build();

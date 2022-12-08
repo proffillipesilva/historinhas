@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 public interface WriterService {
-    void requestReview (String bookId);
+    void requestReview (String bookId, User user);
     List<Book> getDocumentsForEdit(User user);
+
+    User findByEmail(String email);
 }

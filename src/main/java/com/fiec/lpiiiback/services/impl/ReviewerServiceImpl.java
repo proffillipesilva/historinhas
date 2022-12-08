@@ -3,6 +3,7 @@ package com.fiec.lpiiiback.services.impl;
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
 import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
+import com.fiec.lpiiiback.models.repositories.BookRepository;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.BookService;
 import com.fiec.lpiiiback.services.ReviewerService;
@@ -23,6 +24,9 @@ public class ReviewerServiceImpl implements ReviewerService {
 
     @Autowired
     BookService bookService;
+
+    @Autowired
+    BookRepository bookRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -66,7 +70,9 @@ public class ReviewerServiceImpl implements ReviewerService {
         if(book.getAuthors() == null) book.setAuthors(new HashSet<>());
 
         book.getAuthors().add(user);
-        userRepository.save(user);
+        //userRepository.save(user);
+        bookRepository.save(book);
+
     }
 
     @Override

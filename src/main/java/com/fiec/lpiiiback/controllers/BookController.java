@@ -6,6 +6,7 @@ import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
 import com.fiec.lpiiiback.models.dto.BookResponseDto;
+import com.fiec.lpiiiback.models.dto.ReviewerBookResponseDto;
 import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.enums.UserRoles;
@@ -91,9 +92,9 @@ public class BookController {
     }
 
     @GetMapping("/reviewer")
-    public List<BookResponseDto> getBooksByReviewer(Authentication authentication){
+    public List<ReviewerBookResponseDto> getBooksByReviewer(Authentication authentication){
         User user = (User) authentication.getPrincipal();
         if(UserRoles.ROLE_USER.equals(user.getUserRole())) return null;
-        return bookService.getBooksByReviewerId(user.getId()).stream().map(BookResponseDto::convert).collect(Collectors.toList());
+        return bookService.getBooksByReviewerId(user.getId());
     }
 }

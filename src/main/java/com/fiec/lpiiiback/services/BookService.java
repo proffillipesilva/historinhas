@@ -1,6 +1,7 @@
 package com.fiec.lpiiiback.services;
 
 import com.fiec.lpiiiback.models.dto.BookRequestDto;
+import com.fiec.lpiiiback.models.dto.ReviewerBookResponseDto;
 import com.fiec.lpiiiback.models.entities.Book;
 import com.fiec.lpiiiback.models.entities.User;
 
@@ -21,7 +22,7 @@ public interface BookService {
 
     List<Book> getMyBooks(User user);
 
-    List<Book> getBooksByReviewerId(Integer reviewerId);
+    List<ReviewerBookResponseDto> getBooksByReviewerId(Integer reviewerId);
 
 
 }
