@@ -9,5 +9,9 @@ public interface MessagingService {
 
     void sendMessageToUser(Integer userId);
 
-    void sendReviewMessageToUser(Integer userId, Book book, String requesterEmail);
+    void sendRequestReviewMessageToReviewer(Integer userId, Book book, String requesterEmail);
+
+    void sendInviteMessageToUser(Integer userId, Book book, String reviewerEmail);
+
+    void sendFinishBookMessageToAuthors(Book book);
 }

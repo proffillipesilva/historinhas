@@ -6,21 +6,26 @@ import com.fiec.lpiiiback.models.entities.User;
 import com.fiec.lpiiiback.models.repositories.BookRepository;
 import com.fiec.lpiiiback.models.repositories.UserRepository;
 import com.fiec.lpiiiback.services.BookService;
+import com.fiec.lpiiiback.services.MessagingService;
 import com.fiec.lpiiiback.services.ReviewerService;
 import com.google.api.services.docs.v1.Docs;
 import com.google.api.services.drive.model.Permission;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.HashSet;
 
+@Slf4j
 @Service
 public class ReviewerServiceImpl implements ReviewerService {
     @Autowired
     GoogleDriveManager googleDriveManager;
+
+    @Autowired
+    MessagingService messagingService;
 
     @Autowired
     BookService bookService;
@@ -56,7 +61,7 @@ public class ReviewerServiceImpl implements ReviewerService {
     }
 
     @Override
-    public void inviteWriter(Integer writerId, String bookId) throws GeneralSecurityException, IOException {
+    public void inviteWriter(User reviewer, Integer writerId, String bookId) throws GeneralSecurityException, IOException {
         User user = userRepository.findById(writerId).orElseThrow();
         Book book = bookService.getBookById(bookId);
 
@@ -72,6 +77,13 @@ public class ReviewerServiceImpl implements ReviewerService {
         book.getAuthors().add(user);
         //userRepository.save(user);
         bookRepository.save(book);
+
+        try{
+            messagingService.sendInviteMessageToUser(user.getId(), book, reviewer.getEmail());
+            messagingService.sendMessageToUser(user.getId());
+        } catch(Exception e){
+            log.error(e.getMessage());
+        }
 
     }
 

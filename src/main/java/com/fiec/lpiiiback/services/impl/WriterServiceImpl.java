@@ -27,7 +27,7 @@ public class WriterServiceImpl implements WriterService {
     @Override
     public void requestReview(String bookId, User user) {
         Book book = bookRepository.findById(bookId).orElseThrow();
-        messagingService.sendReviewMessageToUser(book.getReviewerId(), book, user.getEmail());
+        messagingService.sendRequestReviewMessageToReviewer(book.getReviewerId(), book, user.getEmail());
 
     }
 

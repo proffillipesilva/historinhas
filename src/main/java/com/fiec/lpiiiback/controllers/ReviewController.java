@@ -25,8 +25,9 @@ public class ReviewController {
 
     }
     @PostMapping("/inviteWriter/{writerId}/book/{bookId}")
-    public void inviteWriter(@PathVariable("writerId") Integer writerId,@PathVariable("bookId") String bookId) throws GeneralSecurityException, IOException {
-        reviewerService.inviteWriter(writerId,bookId);
+    public void inviteWriter(@PathVariable("writerId") Integer writerId,@PathVariable("bookId") String bookId, Authentication authentication) throws GeneralSecurityException, IOException {
+        User reviewer = (User) authentication.getPrincipal();
+        reviewerService.inviteWriter(reviewer, writerId, bookId);
     }
     @PutMapping("/finishBook/{bookId}")
     public void finishBook(@PathVariable("bookId") String bookId) throws GeneralSecurityException, IOException {
