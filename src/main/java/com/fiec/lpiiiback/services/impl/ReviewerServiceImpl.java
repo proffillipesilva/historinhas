@@ -80,7 +80,7 @@ public class ReviewerServiceImpl implements ReviewerService {
 
         try{
             messagingService.sendInviteMessageToUser(user.getId(), book, reviewer.getEmail());
-            messagingService.sendMessageToUser(user.getId());
+
         } catch(Exception e){
             log.error(e.getMessage());
         }
