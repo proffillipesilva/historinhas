@@ -43,7 +43,7 @@ public class DriveActivityQuickstart {
      */
     private static final List<String> SCOPES =
             Arrays.asList(DriveActivityScopes.DRIVE_ACTIVITY_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static final String CREDENTIALS_FILE_PATH = "/google_credentials.json";
     /**
      * Global instance of the {@link FileDataStoreFactory}.
      */

@@ -46,7 +46,7 @@ public class DocsQuickstart {
             DocsScopes.DOCUMENTS,
             DocsScopes.DRIVE, DocsScopes.DRIVE_FILE
     );
-    private static final String CREDENTIALS_FILE_PATH = "/credentials2.json";
+    private static final String CREDENTIALS_FILE_PATH = "/google_credentials.json";
 
     /**
      * Creates an authorized Credential object.

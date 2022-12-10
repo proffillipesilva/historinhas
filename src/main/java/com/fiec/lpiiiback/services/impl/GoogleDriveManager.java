@@ -36,7 +36,7 @@ public class GoogleDriveManager {
             DocsScopes.DOCUMENTS, DocsScopes.DOCUMENTS_READONLY, DriveScopes.DRIVE_METADATA,
         DocsScopes.DRIVE, DocsScopes.DRIVE_FILE, DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_APPDATA
     );
-    private static final String CREDENTIALS_FILE_PATH = "/credentials2.json";
+    private static final String CREDENTIALS_FILE_PATH = "/google_credentials.json";
     public Drive getInstance() throws GeneralSecurityException, IOException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
