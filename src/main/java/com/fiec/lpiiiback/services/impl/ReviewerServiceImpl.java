@@ -9,14 +9,18 @@ import com.fiec.lpiiiback.services.BookService;
 import com.fiec.lpiiiback.services.MessagingService;
 import com.fiec.lpiiiback.services.ReviewerService;
 import com.google.api.services.docs.v1.Docs;
+import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.Permission;
+import com.google.api.services.drive.model.PermissionList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.security.Permissions;
 import java.util.HashSet;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -90,6 +94,19 @@ public class ReviewerServiceImpl implements ReviewerService {
     @Override
     public void finishBook(String bookId) throws GeneralSecurityException, IOException {
         Book book = bookService.finishBook(bookId);
+
+        Drive.Permissions.List list = googleDriveManager.getInstance().permissions().list(book.getDocsBook());
+        PermissionList permissionList = list.execute();
+        List<Permission> permissions = permissionList.getPermissions();
+
+            for (Permission perm : permissions) {
+                try {
+                    googleDriveManager.getInstance().permissions().delete(book.getDocsBook(), perm.getId()).execute();
+                } catch(Exception e){
+                    log.error(e.getMessage());
+                }
+            }
+
         Permission permission = new Permission()
                 .setType("anyone")
                 .setRole("reader");

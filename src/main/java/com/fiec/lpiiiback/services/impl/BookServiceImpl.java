@@ -42,8 +42,6 @@ public class BookServiceImpl implements BookService {
                         .bookImage(bookImage)
                         .build()
         );
-
-
         return bookRepository.save(book);
 
     }
@@ -58,7 +56,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book finishBook(String bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow();
-        book.setFinished(false);
+        book.setFinished(true);
         return bookRepository.save(book);
     }
 

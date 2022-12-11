@@ -86,9 +86,9 @@ public class DocsQuickstart {
 
         // Prints the title of the requested doc:
         // https://docs.google.com/document/d/195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE/edit
-        Document response = service.documents().get(DOCUMENT_ID).execute();
-        String title = response.getTitle();
+        //Document response = service.documents().get(DOCUMENT_ID).execute();
+        //String title = response.getTitle();
 
-        System.out.printf("The title of the doc is: %s\n", title);
+        //System.out.printf("The title of the doc is: %s\n", title);
     }
 }
